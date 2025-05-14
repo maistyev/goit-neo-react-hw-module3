@@ -11,14 +11,14 @@ function App() {
     return savedContacts ? JSON.parse(savedContacts) : [];
   });
 
-  const [filteredContacts, setFilteredContacts] = useState(contacts);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleFilterChange = (event) => {
-    const searchTerm = event.target.value.toLowerCase();
-    const filtered = contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(searchTerm)
-    );
-    setFilteredContacts(filtered);
+    setSearchTerm(event.target.value);
   };
 
   const handleSubmit = (values, actions) => {
@@ -29,14 +29,12 @@ function App() {
     };
 
     setContacts([...contacts, newContact]);
-    setFilteredContacts([...contacts, newContact]);
     actions.resetForm();
   };
 
   const handleDelete = (id) => {
     const updatedContacts = contacts.filter((contact) => contact.id !== id);
     setContacts(updatedContacts);
-    setFilteredContacts(updatedContacts);
   };
 
   useEffect(() => {
